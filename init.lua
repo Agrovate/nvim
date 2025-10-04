@@ -1,3 +1,4 @@
+vim.g.mapleader = " "
 vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.tabstop = 2
@@ -71,6 +72,9 @@ require('nvim-treesitter.configs').setup({
 })
 
 
+
+
+-- LSP!!!!
 require("mason").setup()
 require("mason-lspconfig").setup()
 require("mason-tool-installer").setup({
@@ -80,28 +84,8 @@ require("mason-tool-installer").setup({
 	}
 })
 
-vim.lsp.config("lua_ls", {
-	settings = {
-		Lua = {
-			runtime = {
-				version = "LuaJIT",
-			},
-			diagnostics = {
-				globals = {
-					"vim",
-					"require",
-				},
-			},
-			workspace = {
-				library = vim.api.nvim_get_runtime_file("", true),
-			},
-			telemetry = {
-				enable = false,
-			},
-		},
-	},
-})
-
+vim.lsp.enable('lua_ls')
+vim.lsp.enable('rust_analyzer')
 require("luasnip.loaders.from_vscode").lazy_load()
 require("blink.cmp").setup({
 	signature = { enabled = true },
@@ -116,7 +100,6 @@ require("blink.cmp").setup({
 		},
 	},
 })
-
 
 -- Custom Keybinds
 vim.keymap.set('v', '<leader>y', '"+y', { desc = "Yank to system clipboard" })
