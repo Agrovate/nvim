@@ -72,33 +72,91 @@ require('nvim-treesitter.configs').setup({
 })
 
 
+-- ──────────────── LSP SETTINGS ────────────────
 
+-- Diagnostics UI tweaks
+vim.diagnostic.config({
+  virtual_text = true,
+  signs = true,
+  update_in_insert = false,
+  underline = true,
+  severity_sort = true,
+})
 
--- LSP!!!!
+-- Default capabilities (for blink.cmp)
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+
+-- Global on_attach for keymaps
+local on_attach = function(_, bufnr)
+  local map = function(mode, lhs, rhs, desc)
+    vim.keymap.set(mode, lhs, rhs, { buffer = bufnr, desc = desc })
+  end
+
+  map("n", "gd", vim.lsp.buf.definition, "Go to definition")
+  map("n", "gD", vim.lsp.buf.declaration, "Go to declaration")
+  map("n", "gi", vim.lsp.buf.implementation, "Go to implementation")
+  map("n", "go", vim.lsp.buf.type_definition, "Go to type")
+  map("n", "gr", vim.lsp.buf.references, "Find references")
+  map("n", "K", vim.lsp.buf.hover, "Hover")
+  map("n", "<leader>rn", vim.lsp.buf.rename, "Rename symbol")
+  map("n", "<leader>ca", vim.lsp.buf.code_action, "Code actions")
+  map("n", "<leader>f", function() vim.lsp.buf.format({ async = true }) end, "Format file")
+end
+
+-- Mason
 require("mason").setup()
+
+-- Make sure mason registry is loaded BEFORE installer
+pcall(function()
+  require("mason-registry").refresh()
+end)
+
 require("mason-lspconfig").setup()
+
+-- Mason ensures servers are installed
 require("mason-tool-installer").setup({
-	ensure_installed = {
-		"lua_ls",
-	}
+  ensure_installed = {
+    "lua-language-server",
+    "rust-analyzer",
+    "pyright",
+    "bash-language-server",
+    "html-lsp",
+    "css-lsp",
+    "json-lsp",
+    "typescript-language-server",
+  }
 })
 
-vim.lsp.enable('lua_ls')
-vim.lsp.enable('rust_analyzer')
-require("luasnip.loaders.from_vscode").lazy_load()
-require("blink.cmp").setup({
-	signature = { enabled = true },
-	completion = {
-		documentation = { auto_show = true, auto_show_delay_ms = 500 },
-		menu = {
-			auto_show = true,
-			draw = {
-				treesitter = { "lsp" },
-				columns = { { "kind_icon", "label", "label_description", gap = 1 }, { "kind" } },
-			},
-		},
-	},
+
+-- Enable LSPs with defaults
+vim.lsp.enable("lua_ls", {
+  on_attach = on_attach,
+  capabilities = capabilities,
+  settings = {
+    Lua = {
+      diagnostics = { globals = { "vim" } },
+      workspace = { checkThirdParty = false },
+    },
+  },
 })
+
+vim.lsp.enable("rust_analyzer", {
+  on_attach = on_attach,
+  capabilities = capabilities,
+})
+
+vim.lsp.enable("pyright", {
+  on_attach = on_attach,
+  capabilities = capabilities,
+})
+
+vim.lsp.enable("ts_ls", { on_attach = on_attach, capabilities = capabilities })
+vim.lsp.enable("bashls", { on_attach = on_attach, capabilities = capabilities })
+vim.lsp.enable("html", { on_attach = on_attach, capabilities = capabilities })
+vim.lsp.enable("cssls", { on_attach = on_attach, capabilities = capabilities })
+vim.lsp.enable("jsonls", { on_attach = on_attach, capabilities = capabilities })
+
+
 
 -- Custom Keybinds
 vim.keymap.set('v', '<leader>y', '"+y', { desc = "Yank to system clipboard" })
