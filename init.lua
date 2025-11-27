@@ -83,8 +83,18 @@ vim.diagnostic.config({
   severity_sort = true,
 })
 
+require("blink.cmp").setup({
+  signature = { enabled = true },
+  sources = {
+    default = { "lsp", "path", "buffer", "snippets" },
+  },
+})
+
+
 -- Default capabilities (for blink.cmp)
-local capabilities = vim.lsp.protocol.make_client_capabilities()
+local capabilities = require("blink.cmp").get_lsp_capabilities()
+
+-- local capabilities = vim.lsp.protocol.make_client_capabilities()
 
 -- Global on_attach for keymaps
 local on_attach = function(_, bufnr)
