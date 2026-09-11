@@ -17,13 +17,11 @@ vim.pack.add({
     --LSP installs
     {src = "https://github.com/neovim/nvim-lspconfig"},
     {src = "https://github.com/mason-org/mason.nvim"},
-    {src = "https://github.com/saghen/blink.cmp", version = '*'},
     {src = "https://github.com/mrcjkb/rustaceanvim"},
     {src = "https://github.com/stevearc/conform.nvim"},
-
-
 })
 
+vim.pack.add({ 'https://github.com/saghen/blink.lib', 'https://github.com/saghen/blink.cmp' })
 vim.cmd("packloadall")
 
 require("options")
@@ -33,6 +31,7 @@ require("plugins.mini-mini")
 require("plugins.treesitter")
 require("plugins.jupy")
 require("lsp.blink")
+require("lsp.diagnostics")
 require("lsp.rustacean")
 require("plugins.conform")
 require("keybinds")
