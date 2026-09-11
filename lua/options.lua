@@ -23,4 +23,3 @@ vim.opt.colorcolumn = "80"
 vim.opt.packpath:prepend(vim.fn.stdpath('data') .. '/site')
 vim.opt.guicursor = "a:block-blinkon100-blinkoff100-Cursor/lCursor"
 vim.opt.exrc = true
-

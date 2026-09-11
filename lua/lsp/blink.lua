@@ -1,16 +1,19 @@
+-- refuses to work on another machine idk why so build from source
 -- require('blink.cmp').build():pwait()
+
+local mini_snippets = require("mini.snippets")
+mini_snippets.setup({
+    snippets = {
+        mini_snippets.gen_loader.from_lang(),
+    },
+    mappings = {
+        expand = "",
+    }
+})
+
 require("blink.cmp").setup({
 
-    keymap     = {
-        preset = "none",
-        ["<C-Space>"] = { "show", "hide" },
-        ["<C-y>"] = { "accept", "fallback" },
-        ["<C-j>"] = { "select_next", "fallback" },
-        ["<C-k>"] = { "select_prev", "fallback" },
-        ["<Tab>"] = { "snippet_forward", "fallback" },
-        ["<S-Tab>"] = { "snippet_backward", "fallback" },
-    },
-
+    keymap     = BlinkKeymap,
     fuzzy      = {
         implementation = "prefer_rust",
     },
@@ -51,30 +54,4 @@ vim.lsp.enable({
     "rust_analyzer",
     "nixd",
     "nil",
-})
-
-vim.api.nvim_create_autocmd('LspAttach', {
-    callback = function(event)
-        local opts = { buffer = event.buf }
-
-        -- Keymaps (Native Neovim functions)
-        vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
-        vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
-        vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
-        vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
-        vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action, opts)
-        vim.keymap.set('n', '[d', function() vim.diagnostic.jump({ count = -1, float = true }) end, opts)
-        vim.keymap.set('n', ']d', function() vim.diagnostic.jump({ count = 1, float = true }) end, opts)
-        vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, opts)
-        vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, opts)
-
-        if vim.lsp.get_client_by_id(event.data.client_id).supports_method('textDocument/formatting') then
-            vim.api.nvim_create_autocmd('BufWritePre', {
-                buffer = event.buf,
-                callback = function()
-                    vim.lsp.buf.format({ bufnr = event.buf, id = event.data.client_id, timeout_ms = 2000 })
-                end,
-            })
-        end
-    end,
 })
