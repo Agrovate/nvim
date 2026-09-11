@@ -55,7 +55,8 @@ vim.api.nvim_create_autocmd('LspAttach', {
         vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, opts)
         vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, opts)
 
-        if vim.lsp.get_client_by_id(event.data.client_id).supports_method('textDocument/formatting') then
+        local client = vim.lsp.get_client_by_id(event.data.client_id)
+        if client and client:supports_method('textDocument/formatting') then
             vim.api.nvim_create_autocmd('BufWritePre', {
                 buffer = event.buf,
                 callback = function()
