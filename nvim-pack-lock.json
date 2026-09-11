@@ -53,10 +53,6 @@
       "rev": "517ef5994ef9d6b738322664d5fdd948f0fdeb46",
       "src": "https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim"
     },
-    "mason.nvim": {
-      "rev": "44d1e90e1f66e077268191e3ee9d2ac97cc18e65",
-      "src": "https://github.com/mason-org/mason.nvim"
-    },
     "mini.nvim": {
       "rev": "a95dc67ecff78de138543a20c20f29f47111b122",
       "src": "https://github.com/nvim-mini/mini.nvim"

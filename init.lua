@@ -13,7 +13,6 @@ vim.pack.add({
 
     --LSP installs
     { src = "https://github.com/neovim/nvim-lspconfig" },
-    { src = "https://github.com/mason-org/mason.nvim" },
     { src = "https://github.com/mrcjkb/rustaceanvim" },
     { src = "https://github.com/stevearc/conform.nvim" },
     { src = "https://github.com/rafamadriz/friendly-snippets" },
