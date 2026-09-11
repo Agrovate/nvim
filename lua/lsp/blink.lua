@@ -1,5 +1,4 @@
-require('blink.cmp').build():pwait()
-
+-- require('blink.cmp').build():pwait()
 require("blink.cmp").setup({
 
     keymap     = {
