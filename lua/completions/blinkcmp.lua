@@ -8,13 +8,13 @@ mini_snippets.setup({
     },
     mappings = {
         expand = "",
-    }
+    },
 })
 
 require("blink.cmp").setup({
 
-    keymap     = BlinkKeymap,
-    fuzzy      = {
+    keymap = BlinkKeymap,
+    fuzzy = {
         implementation = "prefer_rust",
     },
 
@@ -36,8 +36,8 @@ require("blink.cmp").setup({
         },
     },
 
-    snippets   = { preset = "mini_snippets" },
-    sources    = { default = { "lsp", "snippets", "buffer", "path" } },
+    snippets = { preset = "mini_snippets" },
+    sources = { default = { "lsp", "snippets", "buffer", "path" } },
 })
 
 vim.lsp.config["*"] = {
@@ -54,4 +54,26 @@ vim.lsp.enable({
     "rust_analyzer",
     "nixd",
     "nil",
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = "lua",
+    callback = function()
+        vim.pack.add({
+            { src = "https://github.com/folke/lazydev.nvim", name = "lazydev" },
+        })
+        require("lazydev").setup()
+        require("blink.cmp").setup({
+            sources = {
+                default = { "lazydev", "lsp", "path", "snippets", "buffer" },
+                providers = {
+                    lazydev = {
+                        name = "LazyDev",
+                        module = "lazydev.integrations.blink",
+                        score_offset = 100,
+                    },
+                },
+            },
+        })
+    end,
 })
