@@ -20,21 +20,26 @@
         pkgList = with pkgs; [
           # LSPs
           lua-language-server
+          stylua
+
           vscode-langservers-extracted
           emmet-language-server
           svelte-language-server
-          rust-analyzer
-          ast-grep
-          prettier
-          black
-          alejandra
-          rustfmt
-          python313Packages.python-lsp-server
-          pyright
-          basedpyright
           typescript-language-server
           tailwindcss-language-server
-          stylua
+
+          rust-analyzer
+          rustfmt
+          ast-grep
+
+          prettier
+
+          black
+          python313Packages.python-lsp-server
+          basedpyright
+          ruff
+
+          alejandra
           nixd
 
           # other tools
