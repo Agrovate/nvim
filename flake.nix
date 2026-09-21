@@ -30,6 +30,7 @@
           alejandra
           rustfmt
           python313Packages.python-lsp-server
+          pyright
           typescript-language-server
           tailwindcss-language-server
           stylua
