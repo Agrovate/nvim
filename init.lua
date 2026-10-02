@@ -1,18 +1,16 @@
 vim.pack.add({
-	{ src = "https://github.com/nvim-treesitter/nvim-treesitter" },
-	{ src = "https://github.com/ThePrimeagen/harpoon", version = "harpoon2" },
+	{ src = "https://github.com/nvim-lua/plenary.nvim" },
+
+	{ src = "https://github.com/EdenEast/nightfox.nvim" },
 	{ src = "https://github.com/ellisonleao/gruvbox.nvim" },
 	{ src = "https://github.com/nvim-lualine/lualine.nvim" },
-	{ src = "https://github.com/nvim-lua/plenary.nvim" },
+
+	{ src = "https://github.com/nvim-treesitter/nvim-treesitter" },
+	{ src = "https://github.com/ThePrimeagen/harpoon", version = "harpoon2" },
 	{ src = "https://github.com/nvim-telescope/telescope.nvim" },
 	{ src = "https://github.com/stevearc/oil.nvim" },
-	{ src = "https://github.com/EdenEast/nightfox.nvim" },
-	{ src = "https://github.com/nvim-mini/mini.nvim", name = "mini.nvim" },
 	{ src = "https://github.com/lewis6991/gitsigns.nvim" },
-
-	-- Jupyter Notebook
-	{ src = "https://github.com/benlubas/molten-nvim", version = "v1.0.0" },
-	{ src = "https://github.com/3rd/image.nvim" },
+	{ src = "https://github.com/nvim-mini/mini.nvim", name = "mini.nvim" },
 
 	-- LSP installs
 	{ src = "https://github.com/neovim/nvim-lspconfig" },
@@ -34,5 +32,4 @@ require("completions.diagnostics")
 require("completions.rustacean")
 require("plugins.oil")
 require("plugins.mini-mini")
-require("plugins.jupyter-notebook")
 require("plugins.conform")

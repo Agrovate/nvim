@@ -34,7 +34,6 @@
 
           prettier
 
-          black
           python313Packages.python-lsp-server
           basedpyright
           ruff

@@ -7,7 +7,7 @@ require("conform").setup({
 		markdown = { "prettier" },
 		html = { "prettier" },
 		svelte = { "prettier" },
-		python = { "black" },
+		python = { "ruff_format" },
 		nix = { "alejandra" },
 		css = { "prettier" },
 		rust = { "rustfmt" },
@@ -15,4 +15,3 @@ require("conform").setup({
 	format_on_save = true,
 	undojoin = true,
 })
-
