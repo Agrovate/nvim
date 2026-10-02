@@ -1,24 +1,19 @@
 local hostname = vim.uv.os_gethostname()
 local lowerhostname = string.lower(hostname)
 
-local function get_devenv_settings(root_dir)
-	local result = vim.system({
-		"devenv",
-		"lsp",
-		"--print-config",
-	}, {
-		cwd = root_dir,
-	}):wait()
-
-	if result.code ~= 0 then
-		return nil
-	end
-
-	return vim.json.decode(result.stdout)
+local function is_devenv(root_dir)
+	return vim.uv.fs_stat(root_dir .. "/devenv.nix") ~= nil or vim.uv.fs_stat(root_dir .. "/devenv.yaml") ~= nil
 end
 
 return {
-	cmd = { "nixd" },
+	cmd = function(dispatchers, config)
+		if is_devenv(config.root_dir) then
+			return vim.lsp.rpc.start({ "devenv", "lsp" }, dispatchers, { cwd = config.root_dir })
+		end
+
+		return vim.lsp.rpc.start({ "nixd" }, dispatchers, { cwd = config.root_dir })
+	end,
+
 	filetypes = { "nix" },
 
 	root_dir = function(bufnr, on_dir)
@@ -34,36 +29,26 @@ return {
 		end
 	end,
 
-	on_new_config = function(config, root_dir)
-		local has_devenv = vim.uv.fs_stat(root_dir .. "/devenv.nix") ~= nil
-			or vim.uv.fs_stat(root_dir .. "/devenv.yaml") ~= nil
+	settings = {
+		nixd = {
+			nixpkgs = {
+				expr = "import <nixpkgs> { }",
+			},
 
-		if has_devenv then
-			config.settings = get_devenv_settings(root_dir)
-		else
-			config.settings = {
-				nixd = {
-					nixpkgs = {
-						expr = "import <nixpkgs> { }",
-					},
+			formatting = {
+				command = { "alejandra" },
+			},
 
-					formatting = {
-						command = { "alejandra" },
-					},
-
-					options = {
-						nixos = {
-							expr = '(builtins.getFlake "~/.dotfiles/.nixos").nixosConfigurations.'
-								.. lowerhostname
-								.. ".options",
-						},
-					},
+			options = {
+				nixos = {
+					expr = '(builtins.getFlake "~/.dotfiles/.nixos").nixosConfigurations.'
+						.. lowerhostname
+						.. ".options",
 				},
-			}
-		end
-	end,
+			},
+		},
+	},
 }
-
 -- return {
 -- 	cmd = { "nixd" },
 -- 	filetypes = { "nix" },
